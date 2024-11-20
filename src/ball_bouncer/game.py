@@ -11,27 +11,18 @@ from .ball import Ball, BallConfig
 from .boundary import BoundaryArc, BoundaryConfig
 
 
-@dataclass
-class BallSettings:
-    """
-    Settings for the ball, including its size, speed, and physics properties.
-    """
-
-    radius: int
-    initial_speed: int
-    elasticity: float
-    gravity: float
 
 @dataclass
 class GameConfig:
     """Configuration for the game, including screen size, ball settings, and other parameters."""
     width: int
     height: int
-    ball_settings: BallSettings
-    speed_adjustment_min: int
-    speed_adjustment_max: int
-    angle_speed: float
-
+    fps: int
+    ball_config: BallConfig
+    rotation_speed: tuple[int, int]
+    ball_radius: tuple[int, int]
+    boundary_width: tuple[int, int]
+    boundaries_range: tuple[int, int]
 
 
 class Game:
@@ -54,6 +45,7 @@ class Game:
 
         # Initialize ball
         self.ball = self._create_ball()
+        self._ball_initializations()
 
         self.test_sound = pygame.mixer.Sound(SOUND_FILE)
 
@@ -62,30 +54,25 @@ class Game:
 
         self.running = True
 
+    def _ball_initializations(self):
+        self.ball.speed_y = self.config.ball_config.initial_speed[1]
+        self.config.ball_config.radius = random.randint(self.config.ball_radius[0], self.config.ball_radius[1])
+        self.ball.color=utils.generate_non_black_color(brightness_threshold=150)     
+
     def _create_ball(self) -> Ball:
         """Creates and returns a Ball instance."""
         return Ball(
-            config=BallConfig(
-                position_x=self.config.width // 2,
-                position_y=self.config.height // 2,
-                speed_x=0,
-                speed_y=self.config.ball_settings.initial_speed,
-                color=utils.generate_non_black_color(brightness_threshold=150),
-                radius=self.config.ball_settings.radius,
-                elasticity=self.config.ball_settings.elasticity,
-                gravity=self.config.ball_settings.gravity,
-            )
+            config=self.config.ball_config
         )
 
     def _create_boundaries(self) -> list:
         """Creates and returns a list of boundary arcs with random angles, rotation speeds, and colors."""
         base_radius = min(self.config.width, self.config.height) // 2 - 10
         # Select a random number of boundaries (e.g., between 5 and 10)
-        num_boundaries = random.randint(10, 15)
+        num_boundaries = random.randint(self.config.boundaries_range[0], self.config.boundaries_range[1])
 
         # Calculate radius step based on the number of boundaries
         radius_step = base_radius // (num_boundaries + 1)
-        print(radius_step)
 
         boundaries = []
         for i in range(num_boundaries):
@@ -98,7 +85,7 @@ class Game:
             end_angle = start_angle + math.radians(random.randint(270, 300))
 
             # Randomize rotation speed
-            rotation_speed = random.uniform(0.05, 0.2)
+            rotation_speed = random.uniform(self.config.rotation_speed[0], self.config.rotation_speed[1])
 
             # Generate a non-black color for the boundary
             boundary_color = utils.generate_non_black_color()
@@ -113,7 +100,7 @@ class Game:
                         end_angle=end_angle,
                         rotation_speed=rotation_speed,
                         color=boundary_color,
-                        width=3,
+                        width=random.randint(self.config.boundary_width[0], self.config.boundary_width[1]),
                     )
                 )
             )
@@ -129,17 +116,15 @@ class Game:
 
     def check_collisions(self):
         """Checks for collisions between the ball and boundaries."""
-        # for boundary in self.boundaries[:]:  # Copy the list for safe iteration while modifying
         if self.boundaries:
             boundary = self.boundaries[-1]
-            if boundary.is_point_outside_boundary(self.ball.position_x, self.ball.position_y, self.config.ball_settings.radius):
+            if boundary.is_point_outside_boundary(self.ball.position_x, self.ball.position_y, self.config.ball_config.radius):
                 self._handle_ball_boundary_collision(boundary)
 
     def _handle_ball_boundary_collision(self, boundary: BoundaryArc):
         """Handles the ball's collision with a boundary."""
         if boundary.is_point_in_empty_arc(self.ball.position_x, self.ball.position_y):
             self.test_sound.play()
-            print("Ball hit the empty area!")
 
             # Remove the boundary after collision
             self.boundaries.remove(boundary)
@@ -155,15 +140,14 @@ class Game:
 
     def keep_ball_within_boundary(self):
         """Ensures the ball stays within the active boundary."""
-        # for boundary in self.boundaries:
         if self.boundaries:
             boundary = self.boundaries[-1]
             distance = math.sqrt(
                 (self.ball.position_x - boundary.config.center_x) ** 2
                 + (self.ball.position_y - boundary.config.center_y) ** 2
             )
-            if distance + self.config.ball_settings.radius > boundary.config.radius:
-                excess = distance + self.config.ball_settings.radius - boundary.config.radius
+            if distance + self.config.ball_config.radius > boundary.config.radius:
+                excess = distance + self.config.ball_config.radius - boundary.config.radius
                 angle = math.atan2(self.ball.position_y - boundary.config.center_y,
                                     self.ball.position_x - boundary.config.center_x)
                 self.ball.position_x -= math.cos(angle) * excess
@@ -175,15 +159,15 @@ class Game:
         for boundary in self.boundaries:
             boundary.draw(self.screen)
 
-        pygame.draw.circle(self.screen, self.ball.color, (int(self.ball.position_x), int(self.ball.position_y)), self.config.ball_settings.radius)
+        pygame.draw.circle(self.screen, self.ball.color, (int(self.ball.position_x), int(self.ball.position_y)), self.config.ball_config.radius)
 
     def restart_game(self):
         """Reset the game state and start over."""
         self.ball.position_x = self.config.width // 2
         self.ball.position_y = self.config.height // 2
         self.ball.speed_x = 0
-        self.ball.speed_y = self.config.ball_settings.initial_speed
-        self.ball.color=utils.generate_non_black_color(brightness_threshold=150),
+
+        self._ball_initializations()
 
         # Reinitialize boundaries
         self.boundaries = self._create_boundaries()
@@ -203,12 +187,12 @@ class Game:
             self._update_boundaries()
             self.keep_ball_within_boundary()
 
-            self.ball.speed_y += self.config.ball_settings.gravity  # Apply gravity
+            self.ball.speed_y += self.config.ball_config.gravity  # Apply gravity
 
             self.draw()
 
             pygame.display.flip()
-            self.clock.tick(30)
+            self.clock.tick(self.config.fps)
 
         pygame.quit()
         sys.exit()

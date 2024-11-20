@@ -16,11 +16,9 @@ class BallConfig:
     """
     Configuration class for Ball properties.
     """
-
-    position_x: float = 0
-    position_y: float = 0
-    speed_x: float = 0
-    speed_y: float = 15
+    initial_speed : tuple[float, float] = (0, 20)  
+    speed_adjustment: tuple[int, int] = (10, 75),  # minimum speed, maximum speed
+    initial_position : tuple[float, float] = (0, 0)  # Initial position     
     color: tuple[int, int, int] = (255, 0, 0)
     radius: int = 5
     elasticity: float = 1.0
@@ -39,14 +37,13 @@ class Ball:
         - config (BallConfig): Configuration object for ball properties.
         """
         # Use provided config or default values
-        self.position_x = config.position_x
-        self.position_y = config.position_y
-        self.speed_x = config.speed_x
-        self.speed_y = config.speed_y
+        self.position_x, self.position_y = config.initial_position
+        self.speed_x, self.speed_y = config.initial_speed
         self.color = config.color
         self.radius = config.radius
         self.elasticity = config.elasticity
         self.gravity = config.gravity
+        self.config = config
 
     def update_position(self):
         """Update the ball's position based on its current speed."""
@@ -83,22 +80,18 @@ class Ball:
         # Ensure the speed stays within a reasonable range
         self.adjust_speed()
 
-    def adjust_speed(self, min_speed=10, max_speed=75):
+    def adjust_speed(self):
         """
         Ensure the ball's speed stays within a specified range.
-
-        Parameters:
-        - min_speed (float): Minimum allowable speed.
-        - max_speed (float): Maximum allowable speed.
         """
-        if abs(self.speed_x) < min_speed:
+        if abs(self.speed_x) < self.config.speed_adjustment[0]:
             self.speed_x *= random.uniform(1.5, 3.0)
-        elif abs(self.speed_x) > max_speed:
+        elif abs(self.speed_x) > self.config.speed_adjustment[1]:
             self.speed_x *= random.uniform(0.5, 0.8)
 
-        if abs(self.speed_y) < min_speed:
+        if abs(self.speed_y) < self.config.speed_adjustment[0]:
             self.speed_y *= random.uniform(1.5, 3.0)
-        elif abs(self.speed_y) > max_speed:
+        elif abs(self.speed_y) > self.config.speed_adjustment[0]:
             self.speed_y *= random.uniform(0.5, 0.8)
 
     def get_distance_from_center(self, center_x, center_y):
