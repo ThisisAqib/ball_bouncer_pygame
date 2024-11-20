@@ -9,16 +9,16 @@ from ball_bouncer.game import Game, GameConfig, BallSettings
 
 if __name__ == "__main__":
     game_config = GameConfig(
-        width=800,
-        height=600,
+        width=1920,
+        height=1080,
         ball_settings=BallSettings(
             radius=5,
-            initial_speed=25,
-            elasticity=1.0,
+            initial_speed=50,
+            elasticity=1.1,
             gravity=2.0,
         ),
-        speed_adjustment_min=5,
-        speed_adjustment_max=50,
+        speed_adjustment_min=20,
+        speed_adjustment_max=100,
         angle_speed=math.radians(5),
     )
     game = Game(game_config)

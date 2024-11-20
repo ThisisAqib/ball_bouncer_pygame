@@ -21,21 +21,11 @@ class BallConfig:
     position_y: float = 0
     speed_x: float = 0
     speed_y: float = 15
+    color: tuple[int, int, int] = (255, 0, 0)
     radius: int = 5
     elasticity: float = 1.0
     gravity: float = 2.0
 
-
-@dataclass
-class BallSettings:
-    """
-    Settings for the ball, including its size, speed, and physics properties.
-    """
-
-    radius: int
-    initial_speed: int
-    elasticity: float
-    gravity: float
 
 
 class Ball:
@@ -53,6 +43,7 @@ class Ball:
         self.position_y = config.position_y
         self.speed_x = config.speed_x
         self.speed_y = config.speed_y
+        self.color = config.color
         self.radius = config.radius
         self.elasticity = config.elasticity
         self.gravity = config.gravity
