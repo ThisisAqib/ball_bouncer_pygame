@@ -7,6 +7,8 @@ The Ball Bouncer game features a ball that continuously moves within rotating bo
 ## **Watch the live stream of the game:**  
 I also live-streamed the gameplay of the Ball Bouncer game! You can watch the full stream below to see the gameplay in action:
 
+[Watch the Live Stream](https://www.youtube.com/watch?v=EaCazxnMgUg)
+
 [![Ball Bouncer](docs/images/game_screenshot.png)](https://www.youtube.com/watch?v=EaCazxnMgUg)
 
 ---
