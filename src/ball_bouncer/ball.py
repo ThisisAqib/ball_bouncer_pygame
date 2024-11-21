@@ -16,14 +16,14 @@ class BallConfig:
     """
     Configuration class for Ball properties.
     """
-    initial_speed : tuple[float, float] = (0, 20)  
-    speed_adjustment: tuple[int, int] = (10, 75),  # minimum speed, maximum speed
-    initial_position : tuple[float, float] = (0, 0)  # Initial position     
+
+    initial_speed: tuple[float, float] = (0, 20)
+    speed_adjustment: tuple[int, int] = ((10, 75),)  # minimum speed, maximum speed
+    initial_position: tuple[float, float] = (0, 0)  # Initial position
     color: tuple[int, int, int] = (255, 0, 0)
     radius: int = 5
     elasticity: float = 1.0
     gravity: float = 2.0
-
 
 
 class Ball:
@@ -39,10 +39,6 @@ class Ball:
         # Use provided config or default values
         self.position_x, self.position_y = config.initial_position
         self.speed_x, self.speed_y = config.initial_speed
-        self.color = config.color
-        self.radius = config.radius
-        self.elasticity = config.elasticity
-        self.gravity = config.gravity
         self.config = config
 
     def update_position(self):
@@ -57,8 +53,8 @@ class Ball:
         self.speed_y -= 2 * dot_product * normal_y
 
         # Apply elasticity: Reduce the speed after bouncing
-        self.speed_x *= self.elasticity
-        self.speed_y *= self.elasticity
+        self.speed_x *= self.config.elasticity
+        self.speed_y *= self.config.elasticity
 
         # Add randomness to the bounce to avoid repetitive patterns
         self.randomize_bounce()
@@ -108,16 +104,3 @@ class Ball:
         return math.sqrt(
             (self.position_x - center_x) ** 2 + (self.position_y - center_y) ** 2
         )
-
-    def get_angle_from_center(self, center_x, center_y):
-        """
-        Calculate the angle between the ball and a specified center.
-
-        Parameters:
-        - center_x (float): x-coordinate of the center.
-        - center_y (float): y-coordinate of the center.
-
-        Returns:
-        - float: The angle in radians.
-        """
-        return math.atan2(self.position_y - center_y, self.position_x - center_x)
