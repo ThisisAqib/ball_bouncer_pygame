@@ -2,12 +2,18 @@
 
 The Ball Bouncer game features a ball that continuously moves within rotating boundaries, driven by gravity, speed variations, and random bounce adjustments after each collision. The boundaries rotate and change their angles, interacting with the ball in dynamic ways. When the ball escapes all arcs, new random configurations are applied, such as the number of boundaries, their radius, rotation speed, width, and color. This ensures the game never stops and provides a fresh, unpredictable challenge each time the ball escapes the arcs.
 
-![Game Screenshot](docs/images/game_screenshot.png)
+---
+
+## **Watch the live stream of the game:**  
+I also live-streamed the gameplay of the Ball Bouncer game! You can watch the full stream below to see the gameplay in action:
+
+[![Ball Bouncer](docs/images/game_screenshot.png)](https://www.youtube.com/watch?v=EaCazxnMgUg)
 
 ---
 
 ## **Table of Contents**
 - [**Ball Bouncer Game**](#ball-bouncer-game)
+  - [**Watch the live stream of the game:**](#watch-the-live-stream-of-the-game)
   - [**Table of Contents**](#table-of-contents)
   - [**Features**](#features)
   - [**Installation**](#installation)
