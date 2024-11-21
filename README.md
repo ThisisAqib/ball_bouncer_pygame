@@ -64,8 +64,8 @@ python src/main.py
 
 When running, you will see:
 
-- A ball bouncing within a rotating boundary.
-- Collision sounds when the ball interacts with certain regions.
+- A ball bouncing within a rotating arc boundary.
+- Sound when the ball escapes rotating arc.
 
 ## **Project Structure**
 ```bash
@@ -76,15 +76,14 @@ ball_bouncer/
 │   │   ├── config.py      # Configuration constants
 │   │   ├── ball.py        # Ball logic
 │   │   ├── boundary.py    # Boundary logic
-│   │   └── game.py        # Game entry point
-│   └── __init__.py        # Ensures `src` is treated as a package
+│   │   └── game.py        # Game logic and main loop
+│   ├── __init__.py        # Ensures `src` is treated as a package
+│   └── main.py            # Entry point for the game
 ├── docs/
 │   ├── images/            # Images for documentation (e.g., screenshots)
 ├── assets/                # Game assets (sounds, images, etc.)
 ├── requirements.txt       # List of dependencies
-├── pyproject.toml         # Project metadata and build configuration
 ├── .gitignore             # Files to ignore in source control
 ├── README.md              # Project overview and documentation
-└── LICENSE                # License file for open-source projects
 ```
 
