@@ -1,6 +1,6 @@
 # **Ball Bouncer Game**
 
-A simple and interactive arcade game where a ball bounces within a circular boundary, with realistic gravity and collision physics. The player can observe the ball's interaction with a rotating boundary arc, offering a fun way to experience physics-based gameplay.
+The Ball Bouncer game features a ball that continuously moves within rotating boundaries, driven by gravity, speed variations, and random bounce adjustments after each collision. The boundaries rotate and change their angles, interacting with the ball in dynamic ways. When the ball escapes all arcs, new random configurations are applied, such as the number of boundaries, their radius, rotation speed, width, and color. This ensures the game never stops and provides a fresh, unpredictable challenge each time the ball escapes the arcs.
 
 ![Game Screenshot](docs/images/game_screenshot.png)
 
@@ -20,9 +20,10 @@ A simple and interactive arcade game where a ball bounces within a circular boun
 ---
 
 ## **Features**
-- **Physics-based gameplay**: The ball bounces with gravity, elasticity, and collision detection.
-- **Rotating boundary**: A circular arc boundary rotates, creating dynamic gameplay.
-- **Customizable settings**: Adjust ball speed, gravity, and boundary rotation speed.
+- **Continuous Ball Movement:** The ball constantly moves, influenced by gravity, speed adjustments, and random bounce variations.
+- **Rotating Boundaries:** Boundaries rotate with varying speeds and angles, providing dynamic interactions with the ball.
+- **Endless Gameplay:** The game never stops;  Each time the ball escapes all arcs, new boundary configurations are applied, including the number, size, speed, width, and color of the boundaries.
+- **Elastic Bounce Mechanics:** The ball bounces off boundaries with elasticity, creating unpredictable yet consistent behavior.
 
 ---
 

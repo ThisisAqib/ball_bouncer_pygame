@@ -13,8 +13,8 @@ if __name__ == "__main__":
     # Create the game configuration
     game_config = GameConfig(
         # Screen dimensions
-        width=1920,  # The width of the game window in pixels
-        height=1080,  # The height of the game window in pixels
+        width=1280,  # The width of the game window in pixels
+        height=720,  # The height of the game window in pixels
         fps=30,  # Frames per second for smooth rendering and game updates
         # Ball-specific configuration
         ball_config=BallConfig(
